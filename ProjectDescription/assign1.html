@@ -1,69 +1,74 @@
 <html>
 <head>
-<title>CS 5523 Operating Systems</title>
+<title>A User Space-based Project for Practicing Core Memory Management Concepts</title>
+<style>
+ol {list-style-type: none;}
+li:before {content: "(" counter(section) ") ";}
+li { counter-increment: section;}
+</style>
 </head>
 <body>
 <div class="headingcenter">
-<H2>CS 5523 Operating Systems Project 1 </H2>
+<h2>A User Space-based Project for Practicing Core Memory Management Concepts</h2>
 </div>
 <div>
 <hr/>
-
 <hr/>
-<br/>
-<br/>
-<b>Overview</b><br/> This assignment is related to virutal memory
-management inside OS.  Although typically an OS can support more than
-one process, you only need to handle one process in this
-assignment. You will practice the management of page table and
-physical memory allocation by emulating what happens inside the OS
-kernel. Since we can't operate on real hardware and at the OS level,
-this project will design a simulator.  <br/> <br/>
 
-The homework will include three parts with a total of 80 points.
+<h2>Overview</h2>
+This assignment is related to virtual memory
+management inside the operating system. Although, typically, an OS can support more than
+one process, you will only need to handle a single process in this
+assignment. You will practice the management of a page table and
+physical memory allocation by emulating what happens inside the OS
+kernel. Since we cannot operate on real hardware at the OS level,
+this project aims to design a simulator.<br/><br/>
+
+Homework will include three parts, with a combined total of 80 points.
 <br/>
-In this assignment, we are considering a tiny computing system with 1K
-bytes physical memory, and the virtual address has 12 bits (4096
-bytes). Suppose that the size of virtual page/frame is 128 bytes
-(i.e., with 7 bits in the address as offset).  Before starting
-your implementation, thinking about the following questions.
-<br>
-<br>
-You may only go ahead when you fully understand the answer these
-questions. Talk to your classmate or ask help from TA or the
-instructor in case you have any confusions.
-<br>
-(1) What is the number of virtual pages for each process? (<b> Answer: 32 pages </b>)
-<br>
-(2) How many physical pages (or frames) in total? (<b> Answer: 8 pages </b>)
-<br>
-(3) How many entries in the page table for each process? (<b> Anwer: 32 entries </b>)
-<br>
+In this assignment, we consider a tiny computing system, with 1KB
+physical memory, and with 12-bit virtual addresses (4096
+bytes). Suppose that the size of a virtual page and physical frame is 128 bytes
+(i.e., with 7 address bits representing page offset). Prior to beginning
+your implementation, think carefully about the following questions.
+<br/>
+<br/>
+You should proceed only when you fully understand the answers to these
+questions. Talk with your classmates, or ask for help from a TA or the
+instructor if you are confused.
+<br/>
+
+<table style="border-spacing: 20px;">
+<tr><td></td><td>(1) What is the number of virtual pages for each process?</td><td>(<b> Answer: 32 pages </b>)</td></tr>
+<tr><td></td><td>(2) How many physical pages (or frames) are there in total?</td><td>(<b> Answer: 8 pages </b>)</td></tr>
+<tr><td></td><td>(3) How many entries are in the page table for each process?</td><td>(<b> Answer: 32 entries </b>)</td></tr>
+</table>
+
 
 If you can understand all of these questions, now you can proceed to
-design a paging system that implements one-level page table. We only
-use one-level page table for simplicity.  <br/> <br/>
+design a paging system that implements a one-level page table; we only
+use a single level for simplicity.<br/><br/>
 
-<b>Part 1: 20 points</b><br/>
-This is just to get you started. 
+<h2>Part 1: 20 points</h2>
+This component will simply get you started. 
 Assume that the page table of the process is like the following picture.<br><br>
-<img src="./pagetable.jpg" alt="pagetable" style="float:center;width256px;height:256px">
-<br>
-<br>
-Note that only several entries of the process' page table are listed
-as we will only use the first 7 entries in Part 1.  <br/> <br/> Create
+<img src="pagetable.jpg" alt="pagetable" style="float:center;width256px;height:256px"/>
+<br/>
+<br/>
+Note that only a few entries of the process' page table are listed,
+as we will only use the first seven entries in Part 1.<br/><br/>Create
 a directory called <tt>assign1</tt> for this assignment. Write a main
 program called <tt>assign1part1.c</tt> for this part. The program will
-take only one parameter, <b> the name of sequence file </b>, which
+take only one parameter, <b>the input sequence filename</b>, which
 contains a sequence of logical memory accesses. Here, each logical
-addresses is saved as 8 bytes (<tt>unisgned long</tt>). Your program
+address is stored as 8 bytes (<tt>unsigned long</tt>). Your program
 should read and analyze each logical address, and translate it into
-the corresponding physical addresses based on the given page table as
+the corresponding physical address based on the given page table, as
 shown in the above picture.
 
-<b> Note: to simplify the work in Part 1, you can put the fixed
-  mapping from page to frame as shown in the figure into an array
-  before performing any address translation. </b><br><br>
+<b> Note: to simplify the work in Part 1, you can place the fixed
+  page-to-frame mapping (as shown in the figure) into an array,
+  before performing any address translation. </b><br/><br/>
 
 <!--which you can refer to
 this <a href="http://vi.stackexchange.com/questions/343/how-to-edit-binary-files-with-vim">link</a>
@@ -71,161 +76,149 @@ for openning this file using vim.
 <br>
 -->
 
-The logical memory address is saved in a binary format. To verify that
-you can read in the correct sequence of memory accesses, you can first
-print out the address that you have analyzed. You can test your
+Each logical memory address is saved in a binary format. To verify that
+you can read the correct sequence of memory accesses, you can first
+print the address that you have analyzed. You can test your
 program with the given
-simple <a href="./part1testsequence">test sequence file</a>
+simple <a href="part1testsequence">test sequence file</a>
 (<tt>part1testsequence</tt>), where the first address should be
-0x0000000000000044 and the second one should be
-0x0000000000000224.<br><br>
-You can also refer to the <a href="./analyzesequence.c">sample code</a> to analyze the given sequence file.
+<code>0x0000000000000044</code>, and the second should be
+<code>0x0000000000000224</code>.<br/><br/>
+You may also refer to the <a href="analyzesequence.c">sample code</a>
+to analyze the given sequence file.
 For each logical address in the sequence file, you will use the above
-given simple page table to perform the address translation and
+given simple page table to perform the address translation, and
 generate a corresponding physical address. You will output the
-translated physical address into a new file
-called <tt>output-part1test</tt> file. This <tt>output-part1test</tt>
-file should have the similar format as the
-given <tt>part1testsequence</tt> file as above (i.e., <b>each physical
+translated physical addresses into a new file,
+named <tt>output-part1test</tt>. This <tt>output-part1test</tt>
+file should have a similar format to the
+given <tt>part1testsequence</tt> file, as above (i.e., <b>each physical
 address should use 8 bytes (as an <tt>unsigned long</tt> value) in the
-output file</b>). In this assignment, we save each logical/physical
-address as 64 bits (8 bytes) to make the program to be more
-general.<br><br>
+output file</b>). In this assignment, we represent each logical/physical
+address using 64-bits (8 bytes) to enable the program to be more general.<br/><br/>
 
-Once you test your program with the above simple test sequene, which
-contains only 8 memory accesses, and you are sure the program performs correct address translation, you should use the following
-<a href="./part1sequence">sequence file</a>
+Once you test your program with the above simple test sequence, which
+contains only eight memory accesses, and you are sure the program performs
+address translation correctly, you should use the following
+<a href="part1sequence">sequence file</a>
 (<tt>part1sequence</tt>) as the input file for the logical address
-sequence to generate the translated physical addresses and put them in
-another file called <tt>output-part1</tt>. Then you can utilize
-the <tt>md5sum</tt> to compute their corresponding checksum,
-and <b>you only need to write corresponding checksum into
-"status.txt"</b> file.
+sequence used to generate translated physical addresses, placing them in
+another file called <tt>output-part1</tt>. Then, you can utilize
+the <tt>md5sum</tt> utility to compute their corresponding checksum,
+and <b>you only need to write these checksums into the
+<tt>status.txt</tt> file</b>.<br/><br/>
 
-<br/>
-<br/>
-<b>Part 2: 40 points;</b><br/><br>
 
-In this part, you will be designing the page table and handling the
+<h2>Part 2: 40 points</h2>
+
+In this part, you will be designing the page table and handling
 physical memory management. You will create two new source files in
-this part: <tt>phypages.c</tt> and <tt>pagetable.c</tt>, and a new
-main program named as <tt>assign1part2.c</tt>, plus any necessary
+this part: <tt>phypages.c</tt> and <tt>pagetable.c</tt>, as well as a new
+main program, named <tt>assign1part2.c</tt>, plus any necessary
 header files. Here, <tt>phypages.c</tt> is used to manage the physical
-pages and <tt>pagetable.c</tt> will manage the page table for the
+pages, while <tt>pagetable.c</tt> will manage the page table for the
 process.
-<br>
-<br>
-For this part, we also assume the same as above: the first physical
-frame/page is reserved for the OS, while other pages are freed
-initially. You will use a simple physical page allocation initially:
-<br>
-<b>you will allocate the physical page in the order of frame number, starting from 1, 2, 3, ......</b>.
-If there are some physical pages that are available, you will always allocate from the free list at first.
-<br>
-<br>
+<br/><br/>
+For this part, we will also assume the same as above: the first physical
+frame/page is reserved for the OS, while other pages are initially free.
+You will use a simple physical page allocation scheme initially:
+<br/>
+<b>You will allocate each physical page in frame number order, starting from 1, 2, 3, ...</b>.
+If physical pages are available, you will always allocate from the free list at first.
+<br/><br/>
 
-Once there is no free physical frame, you need to use one of the page
+Once there are no free physical frames, you will need to use one of the page
 replacement policies to choose a physical frame to free. We will use
-the <b> LRU policy</b> at first, which means the page that is least
-recently used (accessed) will be freed at first. <br><br>
+the <b>LRU policy</b> at first, which means the page that was least
+recently used (accessed) will be the first to be freed.<br/><br/>
 
-Note that, once a frame is selected to be freed, you need to do two
-things:<br>
+Note that once a frame is selected to be freed, you need to do two things:<br/>
 
-(1) First, you should change the old entry of page table
-so that we don't have two virtual pages pointing to the same physical
-frame.<br>
+<ol style="padding-left: 0px;">
+<li>First, you should update the old page table entry
+such that you do not have two virtual pages pointing to the same physical
+frame.</li>
+<li>Second, you must change the page table entry of the target page
+to point to the frame. At the same time, you may also set up the
+reverse mapping on the physical frame so that we may find the page
+table entry when we assign this frame to other entries.</li>
+</ol>
 
-(2) Second, you need to change the entry of target page in the page
-table to point to the frame. At the same time, you may also set up the
-reverse mapping on the physical page so that we can find the page
-table entry when we will assign this frame to other entries.<br>
-<br>
+If a page was accessed recently, you should update the
+corresponding the placement of its physical frame so that this frame
+will not be evicted soon (based on the LRU policy).<br/><br/>
 
-If a page is just accessed recently, you should update the
-corresponding the placement of its physic frame so that this frame
-will not be evicted soon (based on the LRU policy).<br>
-<br>
+The input sequence of the program is the same as that used in Part
+1. Thus, you should be able to utilize the same analyzing function
+to obtain the corresponding virtual address, then translate it to a
+physical address for each memory access in the file.<br/><br/>
 
-The input address sequence of the program is the same as in <b>part
-1</b>. Thus, you should be able to utilize the same analyzing function
-to get the corresponding virtual address, and then transfer it to a
-physical address for each memory access in the file. <br>
-<br>
+In the end, you can use the same function as in Part 1 to output
+the translated physical address sequence into a file. For the following input sequence
+<a href="part2sequence">part2sequence</a>, the program
+should generate output to a file named <tt>output-part2</tt>.
+<br/><br/>
 
-In the end, you can use the same function of <b>part 1</b> to output
-to the translated physical address sequences into a file. For the following input sequence
-file <a href="./part2sequence">part2sequence</a>, the program
-should generate the output file as <tt>output-part2</tt>. <br><br>
-
-Similar to <b>part 1</b>, you will only need to report the md5sum
+Similar to Part 1, you only need to report the <tt>md5sum</tt>
 checksum for the output file <tt>output-part2</tt>. In addition, your
-program should count the number of page faults for the given logical
-address sequence in the file and the result should be reported in
-<tt>"status.txt</tt>.
+program should count the number of page faults encountered for the given logical
+input sequence, and this result should be reported in your <tt>status.txt</tt> file.
 
-<br>
-<br>
-<b>Part 3: 20 points. Making your design to be
-adaptive to any situation</b><br/>
-<br>
-For this part, we do not assume the size of a page, size of virtual memory,
-size of physical memory. You will design a system that can be adaptive to
-any situation of these different parameters. 
+<br/><br/>
+<h2>Part 3: 20 points</h2>
+<b><i>Adapting your design to generalized scenarios</b></i><br/><br/>
+
+For this part, we will not assume the size of a page, the size of virtual memory,
+or the size of physical memory. You will design a system that can adapt to
+any arbitrary combination of these parameters.
  
-To get the bonus points, you should list whether you have implemented
-part 3 in your "status.txt" file. Also, you should briefly explain how
-to implement this part in comparison to the first two parts. <br><br>
+To receive these bonus points, you should list whether you have implemented
+Part 3 in your <tt>status.txt</tt> file. Also, you should briefly explain how
+your implemented this part, in comparison to the first two parts.<br/><br/>
 
-You should have a new main program named as <tt>assign1part3.c</tt>,
-and your program should accept the following parameters:<br><br>
+You should create a new main program, named <tt>assign1part3.c</tt>,
+and your program should accept the following parameters:<br/><br/>
 
-<tt>./assign1 BytesOfPage SizeOfVirtualMemory SizeOfPhysicalMemory SequenceFile </tt>
+<tt>./assign1 &lt;BytesOfPage&gt; &lt;SizeOfVirtualMemory&gt; &lt;SizeOfPhysicalMemory&gt; &lt;SequenceFile&gt;</tt>
 
-<br>
-<br>
-where the first parameter <tt>BytesOfPage</tt> specifies the number of
-bytes in each physical frame and virtual page. The second
-parameter <tt>SizeOfVirtualMemory</tt> is the size of virtual memory
-in bytes. The third one <tt>SizeOfPhysicalMemory</tt> is the size of
-physical memory in bytes.  The fourth one <tt>SequenceFile</tt> is the
-name of the file that contains the sequence of memory access logical
-addresses that need to be translated. <br>
-<br>
+<br/><br/>
 
-To test your program's Part 3 functions, you can use the parameters
-specified in "Part 2", and your program should generate the same
-output file as <tt>output-part2</tt>. In the end, give an argument
-why you think the implementation is correct.
-<br>
-<br>
+<table>
+<tr><td width="10%">&nbsp;</td><td width="25%"><tt>PageSize</tt></td><td>size of each physical frame and virtual page (in bytes)</td></tr>
+<tr><td>&nbsp;</td><td><tt>SizeOfVirtualMemory</tt></td><td>size of virtual memory (in bytes)</td></tr>
+<tr><td>&nbsp;</td><td><tt>SizeOfPhysicalMemory</tt></td><td>size of physical memory (in bytes)</td></tr>
+<tr><td>&nbsp;</td><td><tt>SequenceFile</tt></td><td>name of the input file containing the sequence of logical addresses to translate</td></tr>
+</table>
+<br/><br/>
+
+To test your program's Part 3 functions, you can first use the parameters
+specified in Part 2, and your program should generate an output file identical
+to <tt>output-part2</tt>. In the end, provide an argument for why you believe your
+implementation is correct.<br/><br/>
 
 
-<b>Submission guideline</b> <br>
-<br>
+<h2>Submission Guidelines</h2>
+Please include your <tt>status.txt</tt> file, as well as the <tt>source</tt> directory that
+includes all source files, as well as a Makefile.<br/><br/>
 
-You will submit through the blackboard. Please including the "status.txt",  and a "source" directory that includes all source code and Makefile. <br>
+<b><tt>source</tt> directory: mandatory</b> <br> 
+This directory should include all of your source code (<tt>*.c</tt>,
+<tt>*.h</tt>, etc.) as well as a Makefile. 
+Without source code, you can earn only 50% of the total points, at most.<br/><br/>
 
-<b>"source" directory: mandatory</b> <br> 
-This directory should include all of your source code (*.c, *.h) and Makefile. 
-Without the soure code, you can only get 50% points of your earned at most.  
+<b><tt>status.txt</tt>: manadatory</b><br/>
+You should include a status report in a file named <tt>status.txt</tt>. 
+This status report should state whether you have completed Parts 1 and 2
+successfully. If so, include the <tt>md5sum</tt> checksums for each of the
+given input sequences. For Part 2, you should also include the number of page
+faults for the input sequence. For Part 3, please include the
+required description to receive the bonus points. Please also provide a brief
+description of what is or is not working, as well as what progress was made on the non-working part(s).<br/>
+<b>There will be a severe penalty (50% off) if your <tt>status.txt</tt> does
+not align with your source code. Further, if there is
+no <tt>status.txt</tt> present in your submission, you will not receive any points.</b><br/><br/>
 
-<br>
-<b>status.txt: manadatory</b> <br>
-You should include a status report in the file <tt>status.txt</tt>. 
-Here, the status report in <tt>status.txt</tt> should include whether
-you have complete Parts 1 and 2 successfully. If successful, include
-the md5sum checksums for each part on the test input sequences. For
-Part 2: you should also include the number of page faults for test
-sequence.  Part 3: please include the
-required description for the bonus points. Please also give brief
-description of what is working and what progress was made on the part
-that is not working. <b>There will be a severe penalty (50% off) if the "status.txt" is not aligned with your
-source code. If there is no "status.txt", you won't get any points.</b><br><br>
-
-<b>Please compress all of these files into a
-zipped file and name it as "abc123.zip". abc123 should be replaced
-with your abcid. </b><br><br>
+Finally, <b>please compress all files into a single zipped archive prior to submission.</b><br/><br/>
 
 </div>
 </body>
